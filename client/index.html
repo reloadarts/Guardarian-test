@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<input disabled value="1" type="text" />
+<select name="currency" id="currency">
+  <option selected value="ETH">ETH</option>
+  <option value="LTC">LTC</option>
+  <option value="XRP">XRP</option>
+</select>
+<button id="estimate">Estimate</button>
+<input id="result" type="text" placeholder="result">
+
+<script>
+  const result = document.getElementById("result");
+  const estimate = document.getElementById("estimate");
+  const currency = document.getElementById("currency");
+
+  estimate.addEventListener("click", async () => {
+    const res = await fetch(`http://localhost:3000/v1/estimate/${currency.value}`);
+    if (!res.ok) {
+      alert((await res.json()).details);
+      result.value = "";
+      return;
+    }
+    result.value = await res.json();
+  });
+
+</script>
+</body>
+</html>
